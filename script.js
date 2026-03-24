@@ -208,7 +208,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (response.status == 200) {
                     formResult.style.display = 'block';
                     formResult.style.color = '#10B981';
-                    formResult.innerHTML = 'Email sent successfully! (Deshan ge inbox ekata eka giya).';
+                    formResult.innerHTML = 'Message sent successfully! I will get back to you soon.';
                 } else {
                     formResult.style.display = 'block';
                     formResult.style.color = '#ef4444';
