@@ -83,6 +83,66 @@ document.addEventListener('DOMContentLoaded', () => {
     const hiddenElements = document.querySelectorAll('.hidden');
     hiddenElements.forEach(el => observer.observe(el));
 
+    /* --- CV Download Handling --- */
+    const downloadCvBtn = document.getElementById('downloadCvBtn');
+    const cvDownloadStatus = document.getElementById('cv-download-status');
+
+    if (downloadCvBtn) {
+        downloadCvBtn.addEventListener('click', async (e) => {
+            e.preventDefault();
+
+            const cvFilePath = 'cv.pdf';
+
+            const triggerDownload = () => {
+                const tempLink = document.createElement('a');
+                tempLink.href = cvFilePath;
+                tempLink.setAttribute('download', 'Deshan_Shavinda_CV.pdf');
+                document.body.appendChild(tempLink);
+                tempLink.click();
+                tempLink.remove();
+            };
+
+            if (cvDownloadStatus) {
+                cvDownloadStatus.style.display = 'none';
+                cvDownloadStatus.textContent = '';
+            }
+
+            // On file:// pages, fetch/HEAD is blocked, so directly trigger browser download.
+            if (window.location.protocol === 'file:') {
+                triggerDownload();
+
+                if (cvDownloadStatus) {
+                    cvDownloadStatus.style.display = 'block';
+                    cvDownloadStatus.style.color = '#86efac';
+                    cvDownloadStatus.textContent = 'Download request eka yawuwa. Cv file eka project folder eke cv.pdf widiyata thiyenna ona.';
+                }
+                return;
+            }
+
+            try {
+                const response = await fetch(cvFilePath, { method: 'HEAD' });
+
+                if (!response.ok) {
+                    throw new Error('CV file not found');
+                }
+
+                triggerDownload();
+
+                if (cvDownloadStatus) {
+                    cvDownloadStatus.style.display = 'block';
+                    cvDownloadStatus.style.color = '#86efac';
+                    cvDownloadStatus.textContent = 'CV download started.';
+                }
+            } catch (error) {
+                if (cvDownloadStatus) {
+                    cvDownloadStatus.style.display = 'block';
+                    cvDownloadStatus.style.color = '#fca5a5';
+                    cvDownloadStatus.textContent = 'cv.pdf file eka hoyaganna ba. Project folder eke cv.pdf file eka add karanna.';
+                }
+            }
+        });
+    }
+
     /* --- Active Navigation Link Update on Scroll --- */
     const sections = document.querySelectorAll('section');
     
