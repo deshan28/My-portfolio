@@ -293,6 +293,46 @@
         </div>
     </footer>
 
+    <!-- Supiri Chat Bot -->
+    <div class="chatbot-container">
+        <button id="chatbotToggle" class="chatbot-toggle">
+            <i class="fas fa-comment-dots"></i>
+            <span class="bot-tooltip">Hey! Let's chat 👋</span>
+        </button>
+
+        <div id="chatbotWindow" class="chatbot-window glass-panel hidden-bot">
+            <div class="chat-header gradient-text-bg">
+                <div class="bot-info">
+                    <img src="https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?auto=format&fit=crop&w=150&q=80" alt="Bot Avatar" class="bot-avatar" onerror="this.src='https://cdn-icons-png.flaticon.com/512/4712/4712010.png'">
+                    <div>
+                        <h3 class="bot-name">DevBot</h3>
+                        <span class="bot-status"><span class="status-dot"></span> Online</span>
+                    </div>
+                </div>
+                <div class="header-actions">
+                    <button id="chatbotReset" class="chatbot-action-btn" title="Restart Chat"><i class="fas fa-undo"></i></button>
+                    <button id="chatbotClose" class="chatbot-action-btn" title="Close"><i class="fas fa-times"></i></button>
+                </div>
+            </div>
+            
+            <div class="chat-messages" id="chatMessages">
+                <div class="message bot-message">
+                    <p>Hi there! 👋 I'm Deshan's personal assistant bot. How can I help you today?</p>
+                </div>
+                <div class="quick-replies">
+                    <button class="quick-reply-btn" data-reply="skills">What are your skills?</button>
+                    <button class="quick-reply-btn" data-reply="contact">How to contact you?</button>
+                    <button class="quick-reply-btn" data-reply="project">Tell me about projects</button>
+                </div>
+            </div>
+
+            <div class="chat-input-area">
+                <input type="text" id="chatInput" placeholder="Type a message..." aria-label="Type message">
+                <button id="chatSendBtn" class="chat-send"><i class="fas fa-paper-plane"></i></button>
+            </div>
+        </div>
+    </div>
+
     <script src="script.js"></script>
 </body>
 
