@@ -291,4 +291,109 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
     }
+
+    /* --- Bot Logic --- */
+    const chatbotToggle = document.getElementById('chatbotToggle');
+    const chatbotWindow = document.getElementById('chatbotWindow');
+    const chatbotClose = document.getElementById('chatbotClose');
+    const chatbotReset = document.getElementById('chatbotReset');
+    const chatMessages = document.getElementById('chatMessages');
+    const chatInput = document.getElementById('chatInput');
+    const chatSendBtn = document.getElementById('chatSendBtn');
+
+    if (chatbotToggle) {
+        chatbotToggle.addEventListener('click', () => {
+            chatbotWindow.classList.toggle('hidden-bot');
+        });
+
+        chatbotClose.addEventListener('click', () => {
+            chatbotWindow.classList.add('hidden-bot');
+        });
+
+        if (chatbotReset) {
+            chatbotReset.addEventListener('click', () => {
+                // Remove dynamic messages, keeping only initial greeting and quick replies
+                const elements = Array.from(chatMessages.children);
+                for (let i = 2; i < elements.length; i++) {
+                    elements[i].remove();
+                }
+                
+                // Show quick replies again
+                const qr = chatMessages.querySelector('.quick-replies');
+                if (qr) qr.style.display = 'flex';
+                
+                chatInput.value = '';
+                chatMessages.scrollTop = 0;
+            });
+        }
+
+        // Bot Responses Logic
+        const botResponses = {
+            "hello": "Hello there! 👋 How can I assist you?",
+            "hi": "Hi! Welcome to Deshan's portfolio. What would you like to know?",
+            "skills": "Deshan is highly skilled in HTML5, CSS3, JavaScript (ES6+), and UI/UX Designing. He builds awesome stuff! 💻",
+            "contact": "You can contact Deshan via email at deshansr2002@gmail.com or call him at +94 703115990. Also, check out the contact section below! 📞",
+            "project": "Deshan has completed 50+ projects, from E-commerce storefronts to creative portfolios. Check out the 'Featured Work' section! 🚀",
+            "default": "Hmm, I am not sure about that. 😅 Try asking about 'skills', 'contact', or 'projects', or just drop a message in the contact form!"
+        };
+
+        function addMessage(text, sender) {
+            const msgDiv = document.createElement('div');
+            msgDiv.classList.add('message');
+            msgDiv.classList.add(sender === 'bot' ? 'bot-message' : 'user-message');
+            msgDiv.innerHTML = `<p>${text}</p>`;
+            
+            // Remove quick replies if user sends a message
+            if (sender === 'user') {
+                const qr = chatMessages.querySelector('.quick-replies');
+                if (qr) qr.style.display = 'none';
+            }
+
+            chatMessages.appendChild(msgDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        function handleUserMessage(msg) {
+            if (!msg.trim()) return;
+            
+            addMessage(msg, 'user');
+            chatInput.value = '';
+
+            // Simulate typing delay
+            setTimeout(() => {
+                let response = botResponses['default'];
+                let lowerMsg = msg.toLowerCase();
+                
+                if (lowerMsg.includes('hi') || lowerMsg.includes('hello')) response = botResponses['hello'];
+                else if (lowerMsg.includes('skill')) response = botResponses['skills'];
+                else if (lowerMsg.includes('contact') || lowerMsg.includes('email') || lowerMsg.includes('number')) response = botResponses['contact'];
+                else if (lowerMsg.includes('project') || lowerMsg.includes('work')) response = botResponses['project'];
+
+                addMessage(response, 'bot');
+            }, 800);
+        }
+
+        chatSendBtn.addEventListener('click', () => {
+            handleUserMessage(chatInput.value);
+        });
+
+        chatInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                handleUserMessage(chatInput.value);
+            }
+        });
+
+        // Quick replies handler
+        document.querySelectorAll('.quick-reply-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const replyType = e.target.getAttribute('data-reply');
+                let userText = e.target.innerText;
+                addMessage(userText, 'user');
+                
+                setTimeout(() => {
+                    addMessage(botResponses[replyType], 'bot');
+                }, 800);
+            });
+        });
+    }
 });
