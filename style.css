@@ -245,6 +245,26 @@ body::before {
     color: white;
     text-decoration: none;
     letter-spacing: 1px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.nav-logo-img {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--primary);
+    padding: 2px;
+    background: rgba(255, 255, 255, 0.05);
+    transition: var(--transition);
+}
+
+.logo:hover .nav-logo-img {
+    transform: scale(1.1) rotate(5deg);
+    border-color: var(--secondary);
+    box-shadow: 0 0 15px rgba(139, 92, 246, 0.4);
 }
 
 .logo span {
